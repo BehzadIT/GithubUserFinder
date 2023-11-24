@@ -27,13 +27,18 @@ fun GithubUserFinderNavHost(
             UserSearchScreen(navController = navController)
         }
         composable(
-            "userDetail?username={username}", arguments = listOf(navArgument("username") {
-                type = NavType.StringType
-            })
+            "userDetail?username={username}&avatar={avatar}", arguments = listOf(
+                navArgument("username") {
+                    type = NavType.StringType
+                },
+                navArgument("avatar") {
+                    type = NavType.StringType
+                })
         ) {
             UserDetailScreen(
                 navController = navController,
-                username = requireNotNull(it.arguments?.getString("username"))
+                username = requireNotNull(it.arguments?.getString("username")),
+                avatar = requireNotNull(it.arguments?.getString("avatar"))
             )
         }
 

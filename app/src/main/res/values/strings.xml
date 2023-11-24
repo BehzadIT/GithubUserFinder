@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Github User Finder</string>
+    <string name="user_detail_name">Name: %s</string>
+    <string name="user_detail_bio">Bio: %s</string>
+    <string name="user_detail_company">Company: %s</string>
+    <string name="user_detail_location">Location: %s</string>
+    <string name="user_detail_follow_info">Followers: %d  &#160;&#160; Followings: %d</string>
 </resources>

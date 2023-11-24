@@ -35,7 +35,7 @@ fun UserSearchScreen(
         })
 
         UserSearchScreen(users = users.data.orEmpty(), modifier = modifier, onItemClick = {
-            navController.navigate("userDetail?username=${it.login}")
+            navController.navigate("userDetail?username=${it.login}&avatar=${it.avatarUrl}")
         })
     }
 }
