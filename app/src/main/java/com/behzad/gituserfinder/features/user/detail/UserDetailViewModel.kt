@@ -1,12 +1,12 @@
-package com.behzad.gituserfinder.features.userDetail
+package com.behzad.gituserfinder.features.user.detail
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.behzad.gituserfinder.features.shared.LoadableData
 import com.behzad.gituserfinder.features.shared.setAsLoadableData
-import com.behzad.gituserfinder.features.userSearch.data.GithubUserDetail
-import com.behzad.gituserfinder.features.userSearch.data.usecase.GetGitHubUserDetailUseCase
+import com.behzad.gituserfinder.features.user.data.GithubUserDetail
+import com.behzad.gituserfinder.features.user.detail.usecase.GetGitHubUserDetailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn

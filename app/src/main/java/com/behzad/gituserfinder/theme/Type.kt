@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.ui.theme
+package com.behzad.gituserfinder.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

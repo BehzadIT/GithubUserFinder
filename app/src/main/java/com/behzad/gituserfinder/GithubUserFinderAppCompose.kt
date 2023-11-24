@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.behzad.gituserfinder.features.userDetail.UserDetailScreen
-import com.behzad.gituserfinder.features.userSearch.UserSearchScreen
+import com.behzad.gituserfinder.features.user.detail.UserDetailScreen
+import com.behzad.gituserfinder.features.user.search.UserSearchScreen
 
 @Composable
 fun GithubUserFinderAppCompose() {

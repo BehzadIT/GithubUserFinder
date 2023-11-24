@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.features.userSearch.data
+package com.behzad.gituserfinder.features.user.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

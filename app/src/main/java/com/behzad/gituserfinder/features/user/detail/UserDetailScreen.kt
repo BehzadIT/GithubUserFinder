@@ -1,16 +1,10 @@
-package com.behzad.gituserfinder.features.userDetail
+package com.behzad.gituserfinder.features.user.detail
 
-import androidx.activity.compose.ReportDrawn
-import androidx.activity.compose.ReportDrawnWhen
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -35,11 +29,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.behzad.gituserfinder.R
 import com.behzad.gituserfinder.features.shared.LoadableData
-import com.behzad.gituserfinder.features.userSearch.data.GithubUser
-import com.behzad.gituserfinder.features.userSearch.data.GithubUserDetail
+import com.behzad.gituserfinder.features.user.data.GithubUserDetail
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
-import androidx.compose.ui.Alignment.Companion as Alignment1
 
 
 @Composable
@@ -68,9 +60,9 @@ fun UserDetailScreen(
             style = MaterialTheme.typography.titleLarge,
             text = username
         )
-        when (userDetail) {
+        when (val result = userDetail) {
             is LoadableData.Failed -> TODO()
-            is LoadableData.Loaded -> AllUserInfo(requireNotNull(userDetail.data))
+            is LoadableData.Loaded -> AllUserInfo(result.data)
             is LoadableData.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.width(64.dp),
@@ -117,49 +109,6 @@ fun UserInfoRow(iconIcon: ImageVector, info: String, modifier: Modifier = Modifi
         Icon(imageVector = iconIcon, contentDescription = "Stars")
         Text(
             modifier = Modifier.padding(start = 16.dp), text = info
-        )
-    }
-}
-
-@Composable
-fun UserDetailScreen(
-    modifier: Modifier = Modifier,
-    users: List<GithubUser>,
-    onItemClick: (item: GithubUser) -> Unit,
-) {
-    if (users.isEmpty()) {
-        EmptySearchQuery(modifier)
-    } else {
-        GithubUserList(users, modifier, onItemClick)
-    }
-}
-
-@Composable
-private fun GithubUserList(
-    users: List<GithubUser>,
-    modifier: Modifier = Modifier,
-    onItemClick: (item: GithubUser) -> Unit,
-) {
-    val gridState = rememberLazyListState()
-    ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
-    LazyColumn {
-        items(users) { user ->
-        }
-    }
-}
-
-@Composable
-private fun EmptySearchQuery(modifier: Modifier = Modifier) {
-    // Calls reportFullyDrawn when this composable is composed.
-    ReportDrawn()
-
-    Column(
-        modifier,
-        horizontalAlignment = Alignment1.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Search for users", style = MaterialTheme.typography.headlineSmall
         )
     }
 }

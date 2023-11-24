@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.features.userSearch
+package com.behzad.gituserfinder.features.user.search
 
 import androidx.activity.compose.ReportDrawn
 import androidx.activity.compose.ReportDrawnWhen
@@ -15,7 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.behzad.gituserfinder.features.userSearch.data.GithubUser
+import com.behzad.gituserfinder.features.user.data.GithubUser
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.Alignment.Companion as Alignment1
 

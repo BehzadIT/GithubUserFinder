@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.features.userSearch
+package com.behzad.gituserfinder.features.user.search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.behzad.gituserfinder.features.userSearch.data.GithubUser
+import com.behzad.gituserfinder.features.user.data.GithubUser
 
 @Composable
 internal fun GithubUserRow(

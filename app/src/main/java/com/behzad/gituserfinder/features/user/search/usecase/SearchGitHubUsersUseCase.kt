@@ -1,7 +1,7 @@
-package com.behzad.gituserfinder.features.userSearch.data.usecase
+package com.behzad.gituserfinder.features.user.search.usecase
 
-import com.behzad.gituserfinder.features.userSearch.data.GithubUser
-import com.behzad.gituserfinder.features.userSearch.data.GithubUserRepository
+import com.behzad.gituserfinder.features.user.data.GithubUser
+import com.behzad.gituserfinder.features.user.data.GithubUserRepository
 
 class SearchGitHubUsersUseCase(private val githubUserRepository: GithubUserRepository) {
     suspend operator fun invoke(query: String): List<GithubUser> {

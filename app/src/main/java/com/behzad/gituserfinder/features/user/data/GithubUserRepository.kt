@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.features.userSearch.data
+package com.behzad.gituserfinder.features.user.data
 
 class GithubUserRepository(private val gitHubApi: GitHubApi) {
 

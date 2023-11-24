@@ -1,12 +1,12 @@
-package com.behzad.gituserfinder.features.userSearch
+package com.behzad.gituserfinder.features.user.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.behzad.gituserfinder.features.shared.LoadableData
 import com.behzad.gituserfinder.features.shared.setAsLoadableData
-import com.behzad.gituserfinder.features.userSearch.data.GithubUser
-import com.behzad.gituserfinder.features.userSearch.data.usecase.SearchGitHubUsersUseCase
+import com.behzad.gituserfinder.features.user.data.GithubUser
+import com.behzad.gituserfinder.features.user.search.usecase.SearchGitHubUsersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce

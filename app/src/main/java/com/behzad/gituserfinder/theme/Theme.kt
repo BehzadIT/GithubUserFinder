@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.ui.theme
+package com.behzad.gituserfinder.theme
 
 import android.app.Activity
 import android.os.Build

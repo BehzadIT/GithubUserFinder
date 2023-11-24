@@ -1,11 +1,11 @@
 package com.behzad.gituserfinder.di
 
-import com.behzad.gituserfinder.features.userDetail.UserDetailViewModel
-import com.behzad.gituserfinder.features.userSearch.UserSearchViewModel
-import com.behzad.gituserfinder.features.userSearch.data.GitHubApi
-import com.behzad.gituserfinder.features.userSearch.data.GithubUserRepository
-import com.behzad.gituserfinder.features.userSearch.data.usecase.GetGitHubUserDetailUseCase
-import com.behzad.gituserfinder.features.userSearch.data.usecase.SearchGitHubUsersUseCase
+import com.behzad.gituserfinder.features.user.data.GitHubApi
+import com.behzad.gituserfinder.features.user.data.GithubUserRepository
+import com.behzad.gituserfinder.features.user.detail.UserDetailViewModel
+import com.behzad.gituserfinder.features.user.detail.usecase.GetGitHubUserDetailUseCase
+import com.behzad.gituserfinder.features.user.search.UserSearchViewModel
+import com.behzad.gituserfinder.features.user.search.usecase.SearchGitHubUsersUseCase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,9 +29,9 @@ object Modules {
     }
 
     val networkModule = module {
-        factory { provideOkHttpClient() }
-        factory { provideForecastApi(get()) }
+        single { provideOkHttpClient() }
         single { provideRetrofit(get()) }
+        factory { provideForecastApi(get()) }
     }
 
     private fun provideOkHttpClient(): OkHttpClient {
