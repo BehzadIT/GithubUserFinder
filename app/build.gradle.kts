@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.retrofit.convertor)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.coil.compose)
 
     implementation(libs.navigation.compose)
 

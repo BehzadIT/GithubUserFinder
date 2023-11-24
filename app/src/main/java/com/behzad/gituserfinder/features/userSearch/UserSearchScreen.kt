@@ -28,16 +28,16 @@ fun UserSearchScreen(
 
 ) {
     val users by viewModel.searchResults.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    TextField(value = searchQuery, onValueChange = { text ->
-        viewModel.searchForUsers(text)
-    })
+    val searchQuery by viewModel.searchQueryText.collectAsState()
+    Column {
+        TextField(value = searchQuery, onValueChange = { text ->
+            viewModel.searchForUsers(text)
+        })
 
-    UserSearchScreen(users = users.data.orEmpty(),
-        modifier = modifier,
-        onItemClick = {
+        UserSearchScreen(users = users.data.orEmpty(), modifier = modifier, onItemClick = {
             navController.navigate("userDetail?id=${it.id}")
         })
+    }
 }
 
 @Composable
@@ -69,14 +69,6 @@ private fun GithubUserList(
 }
 
 @Composable
-private fun GithubUserRow(
-    githubUser: GithubUser,
-    modifier: Modifier = Modifier
-) {
-    Text(text = githubUser.login)
-}
-
-@Composable
 private fun EmptySearchQuery(modifier: Modifier = Modifier) {
     // Calls reportFullyDrawn when this composable is composed.
     ReportDrawn()
@@ -87,8 +79,7 @@ private fun EmptySearchQuery(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Search for users",
-            style = MaterialTheme.typography.headlineSmall
+            text = "Search for users", style = MaterialTheme.typography.headlineSmall
         )
     }
 }
