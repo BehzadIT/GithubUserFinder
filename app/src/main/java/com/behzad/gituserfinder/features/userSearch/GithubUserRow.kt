@@ -22,7 +22,7 @@ import com.behzad.gituserfinder.features.userSearch.data.GithubUser
 
 @Composable
 internal fun GithubUserRow(
-    githubUser: GithubUser, modifier: Modifier = Modifier
+    githubUser: GithubUser, modifier: Modifier = Modifier, onItemClick: (user: GithubUser) -> Unit
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -36,7 +36,7 @@ internal fun GithubUserRow(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(radius = 300.dp)
             ) {
-
+                onItemClick(githubUser)
             }
     ) {
 

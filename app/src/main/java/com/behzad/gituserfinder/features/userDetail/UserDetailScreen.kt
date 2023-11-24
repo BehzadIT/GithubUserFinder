@@ -1,4 +1,4 @@
-package com.behzad.gituserfinder.features.userSearch
+package com.behzad.gituserfinder.features.userDetail
 
 import androidx.activity.compose.ReportDrawn
 import androidx.activity.compose.ReportDrawnWhen
@@ -9,39 +9,39 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.behzad.gituserfinder.features.userSearch.data.GithubUser
-import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 import androidx.compose.ui.Alignment.Companion as Alignment1
 
 
 @Composable
-fun UserSearchScreen(
+fun UserDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: UserSearchViewModel = koinViewModel(),
+    username: String,
+    viewModel: UserDetailViewModel = getViewModel(
+        parameters = { parametersOf(username) }
+    ),
     navController: NavController
 
 ) {
-    val users by viewModel.searchResults.collectAsState()
-    val searchQuery by viewModel.searchQueryText.collectAsState()
+    val userDetail by viewModel.userDetail.collectAsState()
     Column {
-        TextField(value = searchQuery, onValueChange = { text ->
-            viewModel.searchForUsers(text)
-        })
-
-        UserSearchScreen(users = users.data.orEmpty(), modifier = modifier, onItemClick = {
-            navController.navigate("userDetail?username=${it.login}")
-        })
+        AsyncImage(
+            model = userDetail.data?.avatarUrl,
+            contentDescription = null,
+        )
     }
 }
 
 @Composable
-fun UserSearchScreen(
+fun UserDetailScreen(
     modifier: Modifier = Modifier,
     users: List<GithubUser>,
     onItemClick: (item: GithubUser) -> Unit,
@@ -63,7 +63,6 @@ private fun GithubUserList(
     ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
     LazyColumn {
         items(users) { user ->
-            GithubUserRow(user, modifier, onItemClick)
         }
     }
 }

@@ -1,12 +1,13 @@
 package com.behzad.gituserfinder
 
-import android.app.Activity
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.behzad.gituserfinder.features.userDetail.UserDetailScreen
 import com.behzad.gituserfinder.features.userSearch.UserSearchScreen
 
 @Composable
@@ -21,10 +22,20 @@ fun GithubUserFinderAppCompose() {
 fun GithubUserFinderNavHost(
     navController: NavHostController
 ) {
-    val activity = (LocalContext.current as Activity)
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            UserSearchScreen(navController= navController)
+            UserSearchScreen(navController = navController)
         }
+        composable(
+            "userDetail?username={username}", arguments = listOf(navArgument("username") {
+                type = NavType.StringType
+            })
+        ) {
+            UserDetailScreen(
+                navController = navController,
+                username = requireNotNull(it.arguments?.getString("username"))
+            )
+        }
+
     }
 }

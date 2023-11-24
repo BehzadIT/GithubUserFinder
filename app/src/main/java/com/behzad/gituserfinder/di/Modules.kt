@@ -1,8 +1,10 @@
 package com.behzad.gituserfinder.di
 
+import com.behzad.gituserfinder.features.userDetail.UserDetailViewModel
 import com.behzad.gituserfinder.features.userSearch.UserSearchViewModel
 import com.behzad.gituserfinder.features.userSearch.data.GitHubApi
 import com.behzad.gituserfinder.features.userSearch.data.GithubUserRepository
+import com.behzad.gituserfinder.features.userSearch.data.usecase.GetGitHubUserDetailUseCase
 import com.behzad.gituserfinder.features.userSearch.data.usecase.SearchGitHubUsersUseCase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -19,9 +21,11 @@ object Modules {
     }
     val useCases = module {
         factory { SearchGitHubUsersUseCase(get()) }
+        factory { GetGitHubUserDetailUseCase(get()) }
     }
     val viewModels = module {
         viewModel { UserSearchViewModel(androidApplication(), get()) }
+        viewModel { UserDetailViewModel(androidApplication(), get(), get()) }
     }
 
     val networkModule = module {
