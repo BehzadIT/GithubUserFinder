@@ -8,8 +8,7 @@ sealed class LoadableData<out T> {
 
     data class Loaded<T>(override val data: T) : LoadableData<T>()
 
-    data class Failed<T>(val exception: Exception) :
-        LoadableData<T>() {
+    data class Failed<T>(val exception: Exception) : LoadableData<T>() {
         override val data: T? = null
     }
 
@@ -22,11 +21,12 @@ sealed class LoadableData<out T> {
     }
 }
 
-fun <T> MutableStateFlow<LoadableData<T>>.setAsLoadableData(data: T?) {
-    if (data == null) return
+suspend fun <T> MutableStateFlow<LoadableData<T>>.setAsLoadableData(action: suspend () -> T) {
+    value = LoadableData.Loading()
     value = try {
-        LoadableData.Loaded(data)
+        LoadableData.Loaded(action())
     } catch (e: Exception) {
         LoadableData.Failed(e)
     }
 }
+

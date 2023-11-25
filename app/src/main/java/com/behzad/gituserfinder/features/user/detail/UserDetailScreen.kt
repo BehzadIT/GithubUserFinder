@@ -1,5 +1,6 @@
 package com.behzad.gituserfinder.features.user.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,18 +18,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.behzad.gituserfinder.R
 import com.behzad.gituserfinder.features.shared.LoadableData
+import com.behzad.gituserfinder.features.shared.getErrorMessage
 import com.behzad.gituserfinder.features.user.data.GithubUserDetail
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -61,7 +65,11 @@ fun UserDetailScreen(
             text = username
         )
         when (val result = userDetail) {
-            is LoadableData.Failed -> TODO()
+            is LoadableData.Failed -> {
+                val errorMessage = result.exception.getErrorMessage(LocalContext.current)
+                ToastMessage(errorMessage)
+            }
+
             is LoadableData.Loaded -> AllUserInfo(result.data)
             is LoadableData.Loading -> {
                 CircularProgressIndicator(
@@ -73,6 +81,14 @@ fun UserDetailScreen(
 
             LoadableData.NotLoaded -> {}
         }
+    }
+}
+
+@Composable
+fun ToastMessage(toastMessage: String) {
+    val context = LocalContext.current
+    LaunchedEffect(toastMessage) {
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
     }
 }
 

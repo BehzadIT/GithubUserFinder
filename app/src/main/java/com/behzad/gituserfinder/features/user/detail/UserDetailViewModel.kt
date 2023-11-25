@@ -25,7 +25,7 @@ class UserDetailViewModel(
 
     init {
         viewModelScope.launch {
-            _userDetail.setAsLoadableData(getGitHubUserDetailUseCase(username))
+            _userDetail.setAsLoadableData { getGitHubUserDetailUseCase(username) }
         }
 
     }

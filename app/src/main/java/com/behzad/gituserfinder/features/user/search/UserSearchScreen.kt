@@ -4,9 +4,11 @@ import androidx.activity.compose.ReportDrawn
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -14,8 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.behzad.gituserfinder.features.shared.LoadableData
+import com.behzad.gituserfinder.features.shared.getErrorMessage
 import com.behzad.gituserfinder.features.user.data.GithubUser
+import com.behzad.gituserfinder.features.user.detail.ToastMessage
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.ui.Alignment.Companion as Alignment1
 
@@ -27,29 +34,50 @@ fun UserSearchScreen(
     navController: NavController
 
 ) {
-    val users by viewModel.searchResults.collectAsState()
-    val searchQuery by viewModel.searchQueryText.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
     Column {
         TextField(value = searchQuery, onValueChange = { text ->
             viewModel.searchForUsers(text)
         })
 
-        UserSearchScreen(users = users.data.orEmpty(), modifier = modifier, onItemClick = {
-            navController.navigate("userDetail?username=${it.login}&avatar=${it.avatarUrl}")
-        })
+        if (searchQuery.isBlank()) EmptySearchQuery(modifier)
+        else ResultsForValidSearchQuery(viewModel, navController, modifier)
     }
 }
 
 @Composable
-fun UserSearchScreen(
+private fun ResultsForValidSearchQuery(
+    viewModel: UserSearchViewModel,
+    navController: NavController,
     modifier: Modifier = Modifier,
-    users: List<GithubUser>,
-    onItemClick: (item: GithubUser) -> Unit,
 ) {
-    if (users.isEmpty()) {
-        EmptySearchQuery(modifier)
-    } else {
-        GithubUserList(users, modifier, onItemClick)
+    val users by viewModel.searchResults.collectAsState()
+
+    when (val result = users) {
+        is LoadableData.Failed -> {
+            val errorMessage = result.exception.getErrorMessage(LocalContext.current)
+            ToastMessage(errorMessage)
+        }
+
+        is LoadableData.Loaded -> {
+            if (result.data.isEmpty()) {
+                //no result found
+            } else {
+                GithubUserList(result.data, modifier) {
+                    navController.navigate("userDetail?username=${it.login}&avatar=${it.avatarUrl}")
+                }
+            }
+        }
+
+        is LoadableData.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
+
+        LoadableData.NotLoaded -> {}
     }
 }
 
