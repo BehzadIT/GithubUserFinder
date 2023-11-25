@@ -28,7 +28,7 @@ class UserSearchViewModel(
 
     init {
         viewModelScope.launch {
-            _searchQuery.filter { it.length >= 2 }.map { searchQuery ->
+            _searchQuery.filter { it.isValidSearchQuery() }.map { searchQuery ->
                 _searchResults.value = LoadableData.Loading()
                 searchQuery
             }.debounce(1000).collect {
@@ -42,3 +42,4 @@ class UserSearchViewModel(
         _searchQuery.value = searchQuery
     }
 }
+internal fun String.isValidSearchQuery() = length >= 2

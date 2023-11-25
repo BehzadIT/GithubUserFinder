@@ -1,7 +1,6 @@
 package com.behzad.gituserfinder.features.user.search
 
 import androidx.activity.compose.ReportDrawn
-import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,7 +19,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +44,7 @@ fun UserSearchScreen(
     Column(
         Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         TextField(label = { Text(text = stringResource(id = R.string.search_input_hint)) },
             modifier = Modifier
@@ -63,10 +60,11 @@ fun UserSearchScreen(
                 viewModel.searchForUsers(text)
             })
 
-        if (searchQuery.isBlank()) EmptySearchQuery(modifier)
-        else ResultsForValidSearchQuery(
-            viewModel, navController, modifier.align(CenterHorizontally)
-        )
+        if (searchQuery.isValidSearchQuery())
+            ResultsForValidSearchQuery(
+                viewModel, navController, modifier.align(CenterHorizontally)
+            )
+        else InvalidSearchQuery(modifier)
     }
 }
 
@@ -86,7 +84,7 @@ private fun ResultsForValidSearchQuery(
 
         is LoadableData.Loaded -> {
             if (result.data.isEmpty()) {
-                //no result found
+                EmptyResults()
             } else {
                 GithubUserList(result.data, modifier) {
                     navController.navigate("userDetail?username=${it.login}&avatar=${it.avatarUrl}")
@@ -114,8 +112,6 @@ private fun GithubUserList(
     modifier: Modifier = Modifier,
     onItemClick: (item: GithubUser) -> Unit,
 ) {
-    val gridState = rememberLazyListState()
-    ReportDrawnWhen { gridState.layoutInfo.totalItemsCount > 0 }
     LazyColumn {
         items(users) { user ->
             GithubUserRow(user, modifier, onItemClick)
@@ -124,10 +120,22 @@ private fun GithubUserList(
 }
 
 @Composable
-private fun EmptySearchQuery(modifier: Modifier = Modifier) {
+private fun InvalidSearchQuery(modifier: Modifier = Modifier) {
     // Calls reportFullyDrawn when this composable is composed.
     ReportDrawn()
 
+    Column(
+        modifier, horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.initial_search_screen_placeholder),
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
+}
+
+@Composable
+private fun EmptyResults(modifier: Modifier = Modifier) {
     Column(
         modifier, horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center
     ) {
