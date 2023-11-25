@@ -4,27 +4,36 @@ import androidx.activity.compose.ReportDrawn
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.behzad.gituserfinder.R
 import com.behzad.gituserfinder.features.shared.LoadableData
 import com.behzad.gituserfinder.features.shared.getErrorMessage
 import com.behzad.gituserfinder.features.user.data.GithubUser
 import com.behzad.gituserfinder.features.user.detail.ToastMessage
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.ui.Alignment.Companion as Alignment1
 
 
 @Composable
@@ -35,13 +44,29 @@ fun UserSearchScreen(
 
 ) {
     val searchQuery by viewModel.searchQuery.collectAsState()
-    Column {
-        TextField(value = searchQuery, onValueChange = { text ->
-            viewModel.searchForUsers(text)
-        })
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(label = { Text(text = stringResource(id = R.string.search_input_hint)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            value = searchQuery,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search, contentDescription = "Search"
+                )
+            },
+            onValueChange = { text ->
+                viewModel.searchForUsers(text)
+            })
 
         if (searchQuery.isBlank()) EmptySearchQuery(modifier)
-        else ResultsForValidSearchQuery(viewModel, navController, modifier)
+        else ResultsForValidSearchQuery(
+            viewModel, navController, modifier.align(CenterHorizontally)
+        )
     }
 }
 
@@ -71,7 +96,9 @@ private fun ResultsForValidSearchQuery(
 
         is LoadableData.Loading -> {
             CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
+                modifier = Modifier
+                    .width(64.dp)
+                    .padding(top = 64.dp),
                 color = MaterialTheme.colorScheme.secondary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
@@ -102,12 +129,11 @@ private fun EmptySearchQuery(modifier: Modifier = Modifier) {
     ReportDrawn()
 
     Column(
-        modifier,
-        horizontalAlignment = Alignment1.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier, horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Search for users", style = MaterialTheme.typography.headlineSmall
+            text = stringResource(id = R.string.empty_search_results_placeholder),
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
