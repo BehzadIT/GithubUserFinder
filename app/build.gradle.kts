@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
-    implementation(libs.glide)
     implementation(libs.retrofit)
     implementation(libs.retrofit.convertor)
     implementation(libs.okhttp)
@@ -94,7 +93,5 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-    implementation(libs.gson)
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
 }
