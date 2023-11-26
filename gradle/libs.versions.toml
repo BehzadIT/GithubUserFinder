@@ -16,8 +16,12 @@ gson = "2.10.1"
 retrofit = "2.9.0"
 kotlinx = "1.6.1"
 retrofit-convertor = "1.0.0"
-okhttp = "4.11.0"
+okhttp = "4.12.0"
 coil = "2.5.0"
+androidx-test = "1.5.0"
+mochito = "5.7.0"
+mochito-kotlin = "5.1.0"
+imock="1.13.8"
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -50,6 +54,11 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx" }
 retrofit-convertor = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-convertor" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidx-test" }
+mochito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mochito" }
+mochito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mochito-kotlin" }
+imock = { group = "io.mockk", name = "mockk", version.ref = "imock" }
+
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }

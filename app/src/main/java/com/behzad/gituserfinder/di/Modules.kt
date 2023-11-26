@@ -2,7 +2,7 @@ package com.behzad.gituserfinder.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.behzad.gituserfinder.features.shared.NoConnectivityException
+import com.behzad.gituserfinder.features.shared.NoInternetConnectionException
 import com.behzad.gituserfinder.features.user.data.GitHubApi
 import com.behzad.gituserfinder.features.user.data.GithubUserRepository
 import com.behzad.gituserfinder.features.user.detail.UserDetailViewModel
@@ -18,9 +18,7 @@ import okhttp3.Request
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
 
 
 object Modules {
@@ -59,7 +57,7 @@ object Modules {
         Interceptor {
         override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
             if (!isConnected) {
-                throw NoConnectivityException()
+                throw NoInternetConnectionException()
                 // Throwing our custom exception 'NoConnectivityException'
             }
             val builder: Request.Builder = chain.request().newBuilder()

@@ -12,7 +12,3 @@ class GithubUserRepository(private val gitHubApi: GitHubApi) {
         return tryWithCustomExceptions { gitHubApi.getUserDetail(username) }
     }
 }
-
-
-
-

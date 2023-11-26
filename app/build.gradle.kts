@@ -84,6 +84,10 @@ dependencies {
     testImplementation(libs.koin.test.junit4)
     testImplementation(libs.koin.test.junit5)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.mochito.core)
+    testImplementation(libs.mochito.kotlin)
+    testImplementation(libs.imock)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(platform(libs.compose.bom))
@@ -91,5 +95,6 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.gson)
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
 }

@@ -42,4 +42,4 @@ class UserSearchViewModel(
         _searchQuery.value = searchQuery
     }
 }
-internal fun String.isValidSearchQuery() = length >= 2
+internal fun String.isValidSearchQuery() = trimStart().length >= 2

@@ -1,5 +1,5 @@
 package com.behzad.gituserfinder.features.shared
 
-class NoConnectivityException : Exception() {}
-class HttpClientError : Exception()
-class HttpServerError : Exception()
+class NoInternetConnectionException : Exception() {}
+class HttpClientException : Exception()
+class HttpServerException : Exception()
