@@ -1,6 +1,5 @@
 package com.behzad.gituserfinder.features.user.detail
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,10 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,6 +30,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.behzad.gituserfinder.R
 import com.behzad.gituserfinder.features.shared.LoadableData
+import com.behzad.gituserfinder.features.shared.ToastMessage
 import com.behzad.gituserfinder.features.shared.getErrorMessage
 import com.behzad.gituserfinder.features.user.data.GithubUserDetail
 import org.koin.androidx.compose.getViewModel
@@ -45,24 +44,13 @@ fun UserDetailScreen(
     avatar: String,
     viewModel: UserDetailViewModel = getViewModel(parameters = { parametersOf(username) }),
     navController: NavController
-
 ) {
     val userDetail by viewModel.userDetail.collectAsState()
     Column {
-        AsyncImage(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(32.dp)
-                .clip(shape = CircleShape),
-            model = avatar,
-            contentDescription = null,
-        )
-        Text(
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(bottom = 16.dp),
-            style = MaterialTheme.typography.titleLarge,
-            text = username
+        PrefilledSection(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            avatar = avatar,
+            username = username
         )
         when (val result = userDetail) {
             is LoadableData.Failed -> {
@@ -85,11 +73,20 @@ fun UserDetailScreen(
 }
 
 @Composable
-fun ToastMessage(toastMessage: String) {
-    val context = LocalContext.current
-    LaunchedEffect(toastMessage) {
-        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-    }
+fun PrefilledSection(modifier: Modifier, avatar: String, username: String) {
+    AsyncImage(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(32.dp)
+            .clip(shape = CircleShape),
+        model = avatar,
+        contentDescription = null,
+    )
+    Text(
+        modifier = modifier.padding(bottom = 16.dp),
+        style = MaterialTheme.typography.titleLarge,
+        text = username
+    )
 }
 
 @Composable

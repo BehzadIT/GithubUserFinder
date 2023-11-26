@@ -47,6 +47,7 @@ internal fun GithubUserRow(
 
         ) {
             Text(text = githubUser.login)
+            //load user avatar image
             AsyncImage(
                 model = githubUser.avatarUrl,
                 contentDescription = null,

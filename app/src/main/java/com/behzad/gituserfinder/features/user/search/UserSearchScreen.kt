@@ -1,6 +1,5 @@
 package com.behzad.gituserfinder.features.user.search
 
-import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +28,7 @@ import com.behzad.gituserfinder.R
 import com.behzad.gituserfinder.features.shared.LoadableData
 import com.behzad.gituserfinder.features.shared.getErrorMessage
 import com.behzad.gituserfinder.features.user.data.GithubUser
-import com.behzad.gituserfinder.features.user.detail.ToastMessage
+import com.behzad.gituserfinder.features.shared.ToastMessage
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -46,26 +45,36 @@ fun UserSearchScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = CenterHorizontally
     ) {
-        TextField(label = { Text(text = stringResource(id = R.string.search_input_hint)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            value = searchQuery,
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search, contentDescription = "Search"
-                )
-            },
-            onValueChange = { text ->
-                viewModel.searchForUsers(text)
-            })
+        SearchBox(searchQuery = searchQuery, onSearchTextChanged = {
+            viewModel.searchForUsers(it)
+        })
 
-        if (searchQuery.isValidSearchQuery())
-            ResultsForValidSearchQuery(
-                viewModel, navController, modifier.align(CenterHorizontally)
-            )
-        else InvalidSearchQuery(modifier)
+        //search query is valid, show the results
+        if (searchQuery.isValidSearchQuery()) {
+            ResultsForValidSearchQuery(viewModel, navController, modifier.align(CenterHorizontally))
+        }
+        //search query is too short, how the hint
+        else {
+            InitialSearchHint()
+        }
     }
+}
+
+@Composable
+private fun SearchBox(searchQuery: String, onSearchTextChanged: (query: String) -> Unit) {
+    TextField(
+        label = { Text(text = stringResource(id = R.string.search_input_hint)) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        value = searchQuery,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search, contentDescription = "Search"
+            )
+        },
+        onValueChange = onSearchTextChanged
+    )
 }
 
 @Composable
@@ -83,6 +92,7 @@ private fun ResultsForValidSearchQuery(
         }
 
         is LoadableData.Loaded -> {
+            //search result is empty
             if (result.data.isEmpty()) {
                 EmptyResults()
             } else {
@@ -120,28 +130,17 @@ private fun GithubUserList(
 }
 
 @Composable
-private fun InvalidSearchQuery(modifier: Modifier = Modifier) {
-    // Calls reportFullyDrawn when this composable is composed.
-    ReportDrawn()
-
-    Column(
-        modifier, horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.initial_search_screen_placeholder),
-            style = MaterialTheme.typography.titleLarge
-        )
-    }
+private fun InitialSearchHint() {
+    Text(
+        text = stringResource(id = R.string.initial_search_screen_placeholder),
+        style = MaterialTheme.typography.titleLarge
+    )
 }
 
 @Composable
-private fun EmptyResults(modifier: Modifier = Modifier) {
-    Column(
-        modifier, horizontalAlignment = CenterHorizontally, verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.empty_search_results_placeholder),
-            style = MaterialTheme.typography.titleLarge
-        )
-    }
+private fun EmptyResults() {
+    Text(
+        text = stringResource(id = R.string.empty_search_results_placeholder),
+        style = MaterialTheme.typography.titleLarge
+    )
 }
